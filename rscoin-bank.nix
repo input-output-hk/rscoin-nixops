@@ -11,12 +11,13 @@ let
   configFile = pkgs.writeText "rscoin-bank.conf" 
   ''
   ''; #TODO Fill me with Love ♥♥♥
-  rscoin = pkgs.callPackage . { };
+  rscoin = pkgs.callPackage ./default.nix { };
 in
 {
   options = {
     services.rscoin-bank = {
       enable = mkEnableOption name;
+      
     };
   };
 
