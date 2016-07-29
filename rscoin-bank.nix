@@ -48,7 +48,6 @@ in
         default = true;
       };
 
-
       configFile = mkOption {
         default = "";
         description = "Verbatim contents of the config file.";
@@ -70,7 +69,6 @@ in
         port        = ${toString cfg.notary.port}
       }
     '';
-
 
     users = {
       users.rscoin-bank = {
