@@ -7,7 +7,7 @@ let
   bankPort = 8123;
   notaryPort = 3123;
 
-  pubKey = "f6DGDBkTb9oVKKIrqH0Mom/G0Kl6EO8cqSZpFwlS4wk=";
+  pubKey = "YblQ7-YCmxU_4InsOwSGH4Mm37zGjgy7CLrlWlnHdnM=";
 
 
   bank = {resources, ...}:{
@@ -95,11 +95,8 @@ let
     deployment.ec2.keyPair = resources.ec2KeyPairs.my-key-pair;
     deployment.ec2.securityGroups = ["rscoin-deploy-sec-group"];
 
-    imports = [ ./rscoin-bank.nix ./rscoin-block-explorer.nix ];
+    imports = [ ./rscoin-block-explorer.nix ];
 
-    services.rscoin-bank = {
-      enable = true;
-    };
     services.rscoin-block-explorer = {
       enable = true;
       port = 80;
