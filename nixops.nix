@@ -10,27 +10,12 @@ let
     deployment.ec2.instanceType = "t2.micro";
     deployment.ec2.keyPair = resources.ec2KeyPairs.my-key-pair;
 
-    imports = [ ./rscoin-bank.nix ];
+    imports = [ ./rscoin-bank.nix ./rscoin-block-explorer.nix ];
 
     services.rscoin-bank.enable = true;
+#     services.rscoin-block-explorer.enable = true; #not tested yet
 
-    #services.nginx = {
-    #  enable = true;
-    #  config = ''
-    #    error_log  /webroot/error.log;
-    #     
-    #    events {}
-    #     
-    #    http {
-    #      server {
-    #        access_log /webroot/access.log;
-    #        listen 80;
-    #        root /webroot;
-    #      }
-    #    }
-    #  '';
-    #};
-
+    # TODO security
     networking.firewall.enable = false;
 
     users.extraUsers.guest = {
@@ -57,5 +42,4 @@ in
   rscoin = ec2;
   resources.ec2KeyPairs.my-key-pair =
     { inherit region accessKeyId; };
-
 }

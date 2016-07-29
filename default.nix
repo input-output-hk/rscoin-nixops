@@ -95,7 +95,7 @@ haskellPackagesExtended.mkDerivation { # haskell.lib.buildStackProject {
 #  preConfigure = ''
 
   patchPhase = ''
-    echo "Removing stuipd Setup.hs"
+    echo "WARNING: Removing Setup.hs which wants to run shell commands which will always fail in nix-build"
     rm Setup.hs
   '';
 
