@@ -64,6 +64,11 @@ let
     services.rscoin-block-explorer = {
       enable = true;
       port = 80;
+      bankIP = "8.1.2.3";
+      bankPort = 1234;
+      notaryIP = "8.1.2.3";
+      notaryPort = 1234;
+      bankPubKey = "asdfasdf";
     };
 
 #     users.extraUsers.guest = {
