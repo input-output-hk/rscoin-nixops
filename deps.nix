@@ -6,7 +6,7 @@ rec{
       rev = "a88dfced743c335f84a9ef814b3cd948ba051105";
       sha256 = "1kr1h4dwaj70qi4pv6agg2i8jxsb3qxlqhc5qli90sadmw7jp1s3";
     };
-  serokellCoreExtraDeps = with haskellPackagesExtended; [clock formatting];
+#  serokellCoreExtraDeps = with haskellPackagesExtended; [clock formatting];
 
   serokellPackage = haskellPackagesExtended.mkDerivation {
     pname = "serokell-core";
@@ -19,7 +19,7 @@ rec{
     # FIXME: too many deps for serokell-core! (joschi)
     libraryHaskellDepends = with haskellPackagesExtended; [
        acid-state base64-bytestring either lens optparse-applicative time-units
-       either
+       either aeson clock formatting];
 #      acid-state aeson base base64-bytestring binary bytestring cereal
 #      conduit-extra containers cryptohash data-default directory ed25519
 #      either exceptions file-embed filepath hashable hslogger lens
@@ -27,8 +27,8 @@ rec{
 #      msgpack-rpc mtl QuickCheck random safe safecopy
 #      stm text text-format time time-units transformers
 #      transformers-base tuple unordered-containers vector
-    ] ++ serokellCoreExtraDeps;
-    executableHaskellDepends = with haskellPackagesExtended; [
+#    ] ++ serokellCoreExtraDeps;
+#    executableHaskellDepends = with haskellPackagesExtended; [
 #      acid-state aeson base base64-bytestring binary bytestring cereal
 #      conduit-extra containers cryptohash data-default directory ed25519
 #      exceptions filepath hashable hslogger hspec lens monad-control
@@ -36,19 +36,19 @@ rec{
 #      optparse-applicative QuickCheck random safe safecopy
 #      stm text text-format time time-units transformers
 #      transformers-base tuple unordered-containers vector
-    ] ++ serokellCoreExtraDeps;
-    testHaskellDepends = with haskellPackagesExtended; [
+#    ] ++ serokellCoreExtraDeps;
+#    testHaskellDepends = with haskellPackagesExtended; [
 #      acid-state async base bytestring containers data-default
 #      exceptions conduit-extra
 #      hspec lens MonadRandom msgpack msgpack-rpc mtl QuickCheck random
 #      safe safecopy  stm text time-units transformers tuple
 #      vector 
-    ] ++ serokellCoreExtraDeps;
-    libraryPkgconfigDepends =
-      [ haskellPackagesExtended.aeson zlib git openssh stack nodejs ] ++
-      [ pkgconfig cairo  haskellPackagesExtended.conduit-extra ];
+#    ] ++ serokellCoreExtraDeps;
+#    libraryPkgconfigDepends =
+#      [ haskellPackagesExtended.aeson zlib git openssh stack nodejs ] ++
+#      [ pkgconfig cairo  haskellPackagesExtended.conduit-extra ];
 
-    buildDepends = [ makeWrapper ];
+#    buildDepends = [ makeWrapper ];
 
     license = pkgs.stdenv.lib.licenses.gpl3;
   };
