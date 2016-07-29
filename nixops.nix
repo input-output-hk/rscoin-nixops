@@ -23,10 +23,10 @@ let
     imports = [ ./rscoin-notary.nix ];
     services.rscoin-notary = {
       enable = true;
-    }
-  }
+    };
+  };
 
-  block-explorer = {resources, ...}:{
+  block-explorer = {resources, pkgs, ...}:{
     deployment.targetEnv = "ec2";
     deployment.ec2.accessKeyId = accessKeyId;
     deployment.ec2.region = region;
@@ -81,7 +81,7 @@ in
 {
   rs-bank = bank;
   rs-notary = notary;
-
+  block-explorer = block-explorer;
 
   resources.ec2KeyPairs.my-key-pair =
     { inherit region accessKeyId; };

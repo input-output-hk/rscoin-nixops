@@ -74,6 +74,6 @@ in
       };
     };
 
-    networking.firewall.allowedUDPPorts = [ cfg.port ];
+    networking.firewall.allowedTCPPorts = [ cfg.port-rpc cfg.port-web ];
   };
 }
