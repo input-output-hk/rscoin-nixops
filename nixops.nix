@@ -12,20 +12,22 @@ let
 
     imports = [ ./rscoin-bank.nix ./rscoin-block-explorer.nix ];
 
-    services.rscoin-bank.enable = true;
-#     services.rscoin-block-explorer.enable = true; #not tested yet
-
-    # TODO security
-    networking.firewall.enable = false;
-
-    users.extraUsers.guest = {
-      name = "rscoin";
-      group = "users";
-      uid = 1000;
-      createHome = true;
-      home = "/home/rscoin";
-      shell = "/run/current-system/sw/bin/bash";
+    services.rscoin-bank = {
+      enable = true;
     };
+    services.rscoin-block-explorer = {
+      enable = true;
+      port = 80;
+    };
+
+#     users.extraUsers.guest = {
+#       name = "rscoin";
+#       group = "users";
+#       uid = 1000;
+#       createHome = true;
+#       home = "/home/rscoin";
+#       shell = "/run/current-system/sw/bin/bash";
+#     };
 
     services.openssh.enable = true;
     
@@ -36,6 +38,19 @@ let
       nixops
     ];
 
+    networking.firewall = {
+      enable = true;
+      allowPing = true;
+      allowedTCPPorts = [
+        22
+        80 443           # http/https
+      ];
+      allowedUDPPorts = [
+#         655              # tinc
+        #50428 35948 53913 51413 5350 5351 # transmission
+#         64738            # murmurd (mumble)
+      ];
+    };
   };
 in
 {
