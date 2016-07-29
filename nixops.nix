@@ -8,6 +8,7 @@ let
     deployment.ec2.region = region;
     deployment.ec2.instanceType = "t2.micro";
     deployment.ec2.keyPair = resources.ec2KeyPairs.my-key-pair;
+    deployment.ec2.securityGroups = ["rscoin-deploy-sec-group"];
 
     imports = [ ./rscoin-bank.nix ];
     services.rscoin-bank.enable = true;
@@ -19,6 +20,7 @@ let
     deployment.ec2.region = region;
     deployment.ec2.instanceType = "t2.micro";
     deployment.ec2.keyPair = resources.ec2KeyPairs.my-key-pair;
+    deployment.ec2.securityGroups = ["rscoin-deploy-sec-group"];
 
     imports = [ ./rscoin-notary.nix ];
     services.rscoin-notary = {
@@ -32,6 +34,7 @@ let
     deployment.ec2.region = region;
     deployment.ec2.instanceType = "t2.micro";
     deployment.ec2.keyPair = resources.ec2KeyPairs.my-key-pair;
+    deployment.ec2.securityGroups = ["rscoin-deploy-sec-group"];
 
     imports = [ ./rscoin-bank.nix ./rscoin-block-explorer.nix ];
 
