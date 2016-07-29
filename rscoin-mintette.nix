@@ -4,36 +4,34 @@ with lib;
 
 let
 
-  cfg = config.services.rscoin-bank;
-  name = "rscoin-bank";
+  cfg = config.services.rscoin-mintette;
+  name = "rscoin-mintette";
 
-  stateDir = "/var/lib/rscoin-bank/";
+  stateDir = "/var/lib/rscoin-mintette/";
   rscoin = pkgs.callPackage ./default.nix { };
 in
 {
   options = {
-    services.rscoin-bank = {
+    services.rscoin-mintette = {
       enable = mkEnableOption name;
 
-      host = mkOption {
-        type = types.string;
-        default = "127.0.0.1";
-      };
-
-      publicKey = mkOption {
-        type = types.string;
-        default = "YblQ7+YCmxU/4InsOwSGH4Mm37zGjgy7CLrlWlnHdnM=";
-      };
-      
-      port = mkOption {
-        type = types.int;
-        default = 3123;
+      bank = mkOption{
+        default = {
+          host = "127.0.0.1";
+          port = 8123;
+          publicKey = "YblQ7+YCmxU/4InsOwSGH4Mm37zGjgy7CLrlWlnHdnM=";
+        };
       };
 
       skPath = mkOption {
         type = types.path;
-        default = "/secret/bank.sec" ;
+        default = "/secret/key.sec" ;
         description = "the path to the secret bank key";
+      };
+
+      port = mkOption {
+        type = types.int;
+        default = 3000;
       };
 
       notary = mkOption{
@@ -57,14 +55,13 @@ in
   };
 
   config = mkIf cfg.enable {
-    services.rscoin-bank.configFile = pkgs.writeText "rscoin-bank.conf" 
+    services.rscoin-mintette.configFile = pkgs.writeText "rscoin-mintette.conf" 
     ''
       bank {
-        host        = "${cfg.host}"
-        port        = ${toString cfg.port}
-        publicKey   = "${cfg.publicKey}"
+        host        = "${cfg.bank.host}"
+        port        = ${toString cfg.bank.port}
+        publicKey   = "${cfg.bank.publicKey}"
       }
-
       notary {
         host        = "${cfg.notary.host}"
         port        = ${toString cfg.notary.port}
@@ -73,9 +70,9 @@ in
 
 
     users = {
-      users.rscoin-bank = {
-        uid             = 2147483646;
-        description     = "rscoin-bank server user";
+      users.rscoin-mintette = {
+        uid             = 2147483642;
+        description     = "rscoin-mintette server user";
         group           = "rscoin";
         home            = stateDir;
         createHome      = true;
@@ -86,8 +83,8 @@ in
       };
     };
 
-    systemd.services.rscoin-bank = {
-      description   = "rscoin bank service";
+    systemd.services.rscoin-mintette = {
+      description   = "rscoin mintette service";
       wantedBy      = [ "multi-user.target" ];
       after         = [ "network.target" ];
 
@@ -95,16 +92,17 @@ in
       ''; #TODO probably nothing to do
 
       serviceConfig = {
-        User = "rscoin-bank";
+        User = "rscoin-mintette";
         Group = "rscoin";
         Restart = "always";
         KillSignal = "SIGINT";
         WorkingDirectory = stateDir;
         PrivateTmp = true;
         ExecStart = toString [
-          "${rscoin}/bin/rscoin-bank serve"
+          "${rscoin}/bin/rscoin-mintette"
           "--config-path ${cfg.configFile}"
-          "-k ${cfg.skPath}"
+          "--port ${toString cfg.port}"
+          "--sk ${cfg.skPath}"
           (if cfg.debug then " --log-severity Debug" else "")
         ];
       };

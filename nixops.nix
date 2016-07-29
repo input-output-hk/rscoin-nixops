@@ -4,6 +4,11 @@ let
 
   bankIp = "52.209.108.123";
   notaryIp = "52.17.237.225";
+  bankPort = 8123;
+  notaryPort = 3123;
+
+  pubKey = "f6DGDBkTb9oVKKIrqH0Mom/G0Kl6EO8cqSZpFwlS4wk=";
+
 
   bank = {resources, ...}:{
     deployment.targetEnv = "ec2";
@@ -18,13 +23,13 @@ let
       enable = true;
 
       host = bankIp;
-      port = 8123;
-      publicKey = "f6DGDBkTb9oVKKIrqH0Mom/G0Kl6EO8cqSZpFwlS4wk=";
+      port = bankPort;
+      publicKey = pubKey;
       skPath = "/secret/key.sec";
 
       notary = {
         host = notaryIp;
-        port = 3123;
+        port = notaryPort;
       };
     };
   };
@@ -42,15 +47,43 @@ let
     services.rscoin-notary = {
       enable = true;
       host = notaryIp;
-      port = 3123;
+      port = notaryPort;
 
       bank = {
         host = bankIp;
-        port = 8123;
-        publicKey = "YblQ7+YCmxU/4InsOwSGH4Mm37zGjgy7CLrlWlnHdnM=";
+        port = bankPort;
+        publicKey = pubKey;
       };
     };
   };
+
+  mintette = {resources, ...}:{
+    deployment.targetEnv = "ec2";
+    deployment.ec2.accessKeyId = accessKeyId;
+    deployment.ec2.region = region;
+    deployment.ec2.instanceType = "t2.micro";
+    deployment.ec2.keyPair = resources.ec2KeyPairs.my-key-pair;
+    deployment.ec2.securityGroups = ["rscoin-deploy-sec-group"];
+
+    imports = [ ./rscoin-mintette.nix ];
+
+    services.rscoin-mintette = {
+      enable = true;
+      port = 3000;
+
+      notary = {
+        host = notaryIp;
+        port = notaryPort;
+      };
+
+      bank = {
+        host = bankIp;
+        port = bankPort;
+        publicKey = pubKey;
+      };
+    };
+  };
+
 
   block-explorer = {resources, pkgs, ...}:{
     deployment.targetEnv = "ec2";
@@ -68,11 +101,11 @@ let
     services.rscoin-block-explorer = {
       enable = true;
       port = 80;
-      bankIP = "8.1.2.3";
-      bankPort = 1234;
-      notaryIP = "8.1.2.3";
-      notaryPort = 1234;
-      bankPubKey = "asdfasdf";
+      bankIP = bankIp;
+      bankPort = bankPort;
+      notaryIP = notaryIp;
+      notaryPort = notaryPort;
+      bankPubKey = pubKey;
     };
 
 #     users.extraUsers.guest = {
@@ -113,7 +146,10 @@ in
 {
   rs-bank = bank;
   rs-notary = notary;
+  rs-mintette = mintette;
   block-explorer = block-explorer;
+
+
 
   resources.ec2KeyPairs.my-key-pair =
     { inherit region accessKeyId; };
