@@ -31,7 +31,7 @@ in
         description = ''The TCP port where rscoin-explorer will expect a `bank` instance.'';
       };
       bankPubKey = mkOption {
-        default = "22k34j2k34j23k4j";
+        default = ">> you need to set the public key using nix configuration magic <<";
         description = ''The public key of the `bank` rscoin-explorer will use to contact the `bank`.'';
       };      
       notaryIP = mkOption {
@@ -42,6 +42,11 @@ in
         type = types.int;
         default = 1234;
         description = ''The TCP port where rscoin-explorer will expect a `notary` instance.'';
+      };
+      wsPort = mkOption {
+        type = types.int;
+        default = 3001;
+        description = ''The TCP port where rscoin-explorer will listen with a `websocket`.'';
       };
       configFile = mkOption {
         default = "";
@@ -97,7 +102,7 @@ in
         ExecStart = toString [
           "${rscoin}/bin/rscoin-explorer"
           "--config-path=${cfg.configFile}"
-          "--port-web 3001"
+          "--port-web ${toString cfg.wsPort}"
         ];
       };
     };

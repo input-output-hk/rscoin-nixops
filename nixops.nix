@@ -148,8 +148,6 @@ in
   rs-mintette = mintette;
   block-explorer = block-explorer;
 
-
-
   resources.ec2KeyPairs.my-key-pair =
     { inherit region accessKeyId; };
 }
