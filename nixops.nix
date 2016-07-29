@@ -11,7 +11,18 @@ let
     deployment.ec2.securityGroups = ["rscoin-deploy-sec-group"];
 
     imports = [ ./rscoin-bank.nix ];
-    services.rscoin-bank.enable = true;
+    services.rscoin-bank = {
+      enable = true;
+
+      host = "127.0.0.1";
+      port = 8123;
+      publicKey = "YblQ7+YCmxU/4InsOwSGH4Mm37zGjgy7CLrlWlnHdnM=";
+
+      notary = {
+        host = resources.gceStaticIPs.rs-notary.publicIPv4;
+        port = 3123;
+      };
+    };
   };
 
   notary = {resources, ...}:{
@@ -23,8 +34,17 @@ let
     deployment.ec2.securityGroups = ["rscoin-deploy-sec-group"];
 
     imports = [ ./rscoin-notary.nix ];
+
     services.rscoin-notary = {
       enable = true;
+      host = resources.gceForwardingRules.publicIPv4;
+      port = 3123;
+
+      bank = {
+        host = resources.gceStaticIPs.rs-bank.publicIPv4;
+        port = 8123;
+        publicKey = "YblQ7+YCmxU/4InsOwSGH4Mm37zGjgy7CLrlWlnHdnM=";
+      };
     };
   };
 

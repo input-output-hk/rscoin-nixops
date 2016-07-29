@@ -10,7 +10,17 @@ let
   stateDir = "/var/lib/rscoin-bank/";
   configFile = pkgs.writeText "rscoin-bank.conf" 
   ''
-  ''; #TODO Fill me with Love ♥♥♥
+    bank {
+        host        = ${host}
+        port        = ${port}
+        publicKey   = ${publicKey}
+    }
+
+    notary {
+        host        = ${notary.host}
+        port        = ${notary.port}
+    }
+  '';
   rscoin = pkgs.callPackage ./default.nix { };
 in
 {
@@ -18,10 +28,31 @@ in
     services.rscoin-bank = {
       enable = mkEnableOption name;
 
+      host = mkOption {
+        type = types.string;
+        default = "127.0.0.1";
+      };
+
+      publickKey = mkOption {
+        type = types.string;
+        default = "YblQ7+YCmxU/4InsOwSGH4Mm37zGjgy7CLrlWlnHdnM=";
+      };
+      
       port = mkOption {
         type = types.int;
         default = 3123;
-        description = ''a port'';
+      };
+
+      skPath = mkOption {
+        type = types.path;
+        default = "/secret/bank.key" ;
+      };
+
+      notary = mkOption{
+        default = {
+          host = "127.0.0.1";
+          port = 8123;
+        };
       };
     };
   };
@@ -57,9 +88,9 @@ in
         WorkingDirectory = stateDir;
         PrivateTmp = true;
         ExecStart = toString [
-#          "${rscoin}/bin/rscoin-bank"
           "${rscoin}/bin/rscoin-bank"
-#          "--config=${cfg.configFile}"
+          "--config-path ${cfg.configFile}"
+          "-k ${skPath}"
         ];
       };
     };
