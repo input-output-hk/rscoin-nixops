@@ -50,12 +50,12 @@ in
     services.rscoin-notary.configFile = pkgs.writeText "rscoin-notary.conf" 
     ''
       bank {
-        host        = ${cfg.bank.host}
+        host        = "${cfg.bank.host}"
         port        = ${toString cfg.bank.port}
-        publicKey   = ${cfg.bank.publicKey}
+        publicKey   = "${cfg.bank.publicKey}"
       }
       notary {
-        host        = ${cfg.host}
+        host        = "${cfg.host}"
         port        = ${toString cfg.port}
       }
     ''; 

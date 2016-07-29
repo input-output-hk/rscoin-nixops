@@ -2,6 +2,9 @@ let
   region = "eu-west-1";
   accessKeyId = "dev";
 
+  bankIp = "52.209.108.123";
+  notaryIp = "52.17.237.225";
+
   bank = {resources, ...}:{
     deployment.targetEnv = "ec2";
     deployment.ec2.accessKeyId = accessKeyId;
@@ -14,12 +17,13 @@ let
     services.rscoin-bank = {
       enable = true;
 
-      host = "127.0.0.1";
+      host = bankIp;
       port = 8123;
-      publicKey = "YblQ7+YCmxU/4InsOwSGH4Mm37zGjgy7CLrlWlnHdnM=";
+      publicKey = "f6DGDBkTb9oVKKIrqH0Mom/G0Kl6EO8cqSZpFwlS4wk=";
+      skPath = "/secret/key.sec";
 
       notary = {
-        host = "127.0.0.1";
+        host = notaryIp;
         port = 3123;
       };
     };
@@ -37,11 +41,11 @@ let
 
     services.rscoin-notary = {
       enable = true;
-      host = "127.0.0.1";
+      host = notaryIp;
       port = 3123;
 
       bank = {
-        host = "127.0.0.1";
+        host = bankIp;
         port = 8123;
         publicKey = "YblQ7+YCmxU/4InsOwSGH4Mm37zGjgy7CLrlWlnHdnM=";
       };

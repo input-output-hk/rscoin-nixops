@@ -42,6 +42,12 @@ in
         };
       };
 
+      debug = mkOption {
+        type = types.bool;
+        default = true;
+      };
+
+
       configFile = mkOption {
         default = "";
         description = "Verbatim contents of the config file.";
@@ -53,13 +59,13 @@ in
     services.rscoin-bank.configFile = pkgs.writeText "rscoin-bank.conf" 
     ''
       bank {
-        host        = ${cfg.host}
+        host        = "${cfg.host}"
         port        = ${toString cfg.port}
-        publicKey   = ${cfg.publicKey}
+        publicKey   = "${cfg.publicKey}"
       }
 
       notary {
-        host        = ${cfg.notary.host}
+        host        = "${cfg.notary.host}"
         port        = ${toString cfg.notary.port}
       }
     '';
@@ -95,9 +101,10 @@ in
         WorkingDirectory = stateDir;
         PrivateTmp = true;
         ExecStart = toString [
-          "${rscoin}/bin/rscoin-bank"
+          "${rscoin}/bin/rscoin-bank serve"
           "--config-path ${cfg.configFile}"
           "-k ${cfg.skPath}"
+          (if cfg.debug then " --log-severity Debug" else "")
         ];
       };
     };
