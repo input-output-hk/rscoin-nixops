@@ -8,18 +8,6 @@ let
   name = "rscoin-block-explorer";
 
   stateDir = "/var/lib/rscoin-block-explorer/";
-  configFile = pkgs.writeText "rscoin-block-explorer.conf" ''
-    bank {
-      host       = "cfg.bankIP"
-      port       = cfg.bankPort
-      publicKey  = "cfg.bankPubKey"
-    }
-
-    notary {
-      host = "cfg.notaryIP"
-      port = cfg.notaryPort
-    }
-  '';
 
   rscoin = pkgs.callPackage ./default.nix { };
   block-explorer-static-files = pkgs.callPackage ./block-explorer/default.nix { };
@@ -42,10 +30,15 @@ in
         default = 1234;
         description = ''The TCP port where rscoin-explorer will expect a `bank` instance.'';
       };
+      bankPubKey = mkOption {
+        default = "22k34j2k34j23k4j";
+        description = ''The public key of the `bank` rscoin-explorer will use to contact the `bank`.'';
+      };      
       notaryIP = mkOption {
         default = "0.0.0.0";
         description = ''The IPv4 address where rscoin-explorer will expect a `notary` instance.'';
-      };      notaryPort = mkOption {
+      };      
+      notaryPort = mkOption {
         type = types.int;
         default = 1234;
         description = ''The TCP port where rscoin-explorer will expect a `notary` instance.'';
@@ -58,6 +51,18 @@ in
   };
 
   config = mkIf cfg.enable {
+    services.rscoin-block-explorer.configFile = pkgs.writeText "rscoin-block-explorer.conf" ''
+      bank {
+        host       = "${cfg.bankIP}"
+        port       = ${toString cfg.bankPort}
+        publicKey  = "${cfg.bankPubKey}"
+      }
+
+      notary {
+        host = "${cfg.notaryIP}"
+        port = ${toString cfg.notaryPort}
+      }
+    '';
     users = {
       users.rscoin-block-explorer = {
         #note this is a hack since this is not commited to the nixpkgs
