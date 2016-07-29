@@ -72,11 +72,12 @@ in
         home            = stateDir;
         createHome      = true;
       };
-    };
 
-#     groups.rscoin = {
-#       gid = 2147483646;
-#     };
+      groups.rscoin = {
+        #note this is a hack since this is not commited to the nixpkgs
+        gid = 2147483646;
+      };
+    };
 
     systemd.services.rscoin-explorer = {
       description   = "rscoin block explorer service";
@@ -95,7 +96,8 @@ in
         PrivateTmp = true;
         ExecStart = toString [
           "${rscoin}/bin/rscoin-explorer"
-          "--config=${cfg.configFile}"
+          "--config-path=${cfg.configFile}"
+          "--port-web 3001"
         ];
       };
     };
@@ -113,10 +115,6 @@ in
             access_log ${stateDir}/access.log;
             listen ${toString cfg.port};
             root ${block-explorer-static-files}/share/;
-
-#             location / {
-#               proxy_pass http://localhost:2000/;
-#             }
 
             location /websocket {
               proxy_pass http://localhost:3001/websocket;
