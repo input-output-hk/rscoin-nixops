@@ -19,7 +19,7 @@ let
       publicKey = "YblQ7+YCmxU/4InsOwSGH4Mm37zGjgy7CLrlWlnHdnM=";
 
       notary = {
-        host = resources.gceStaticIPs.rs-notary.publicIPv4;
+        host = "127.0.0.1";
         port = 3123;
       };
     };
@@ -37,11 +37,11 @@ let
 
     services.rscoin-notary = {
       enable = true;
-      host = resources.gceForwardingRules.publicIPv4;
+      host = "127.0.0.1";
       port = 3123;
 
       bank = {
-        host = resources.gceStaticIPs.rs-bank.publicIPv4;
+        host = "127.0.0.1";
         port = 8123;
         publicKey = "YblQ7+YCmxU/4InsOwSGH4Mm37zGjgy7CLrlWlnHdnM=";
       };

@@ -8,19 +8,6 @@ let
   name = "rscoin-bank";
 
   stateDir = "/var/lib/rscoin-bank/";
-  configFile = pkgs.writeText "rscoin-bank.conf" 
-  ''
-    bank {
-        host        = ${host}
-        port        = ${port}
-        publicKey   = ${publicKey}
-    }
-
-    notary {
-        host        = ${notary.host}
-        port        = ${notary.port}
-    }
-  '';
   rscoin = pkgs.callPackage ./default.nix { };
 in
 {
@@ -33,7 +20,7 @@ in
         default = "127.0.0.1";
       };
 
-      publickKey = mkOption {
+      publicKey = mkOption {
         type = types.string;
         default = "YblQ7+YCmxU/4InsOwSGH4Mm37zGjgy7CLrlWlnHdnM=";
       };
@@ -54,10 +41,30 @@ in
           port = 8123;
         };
       };
+
+      configFile = mkOption {
+        default = "";
+        description = "Verbatim contents of the config file.";
+      };
     };
   };
 
   config = mkIf cfg.enable {
+    services.rscoin-bank.configFile = pkgs.writeText "rscoin-bank.conf" 
+    ''
+      bank {
+        host        = ${cfg.host}
+        port        = ${toString cfg.port}
+        publicKey   = ${cfg.publicKey}
+      }
+
+      notary {
+        host        = ${cfg.notary.host}
+        port        = ${toString cfg.notary.port}
+      }
+    '';
+
+
     users = {
       users.rscoin-bank = {
         uid             = 2147483646;
@@ -90,7 +97,7 @@ in
         ExecStart = toString [
           "${rscoin}/bin/rscoin-bank"
           "--config-path ${cfg.configFile}"
-          "-k ${skPath}"
+          "-k ${cfg.skPath}"
         ];
       };
     };

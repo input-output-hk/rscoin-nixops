@@ -8,20 +8,6 @@ let
   name = "rscoin-notary";
 
   stateDir = "/var/lib/rscoin-notary/";
-  configFile = pkgs.writeText "rscoin-notary.conf" 
-  ''
-    bank {
-        host        = ${bank.host}
-        port        = ${bank.port}
-        publicKey   = ${bank.publicKey}
-    }
-
-    notary {
-        host        = ${host}
-        port        = ${port}
-    }
-
-  ''; 
   rscoin = pkgs.callPackage ./default.nix { };
 in
 {
@@ -52,10 +38,29 @@ in
         };
       };
 
+      configFile = mkOption {
+        default = "";
+        description = "Verbatim contents of the config file.";
+      };
+
     };
   };
 
   config = mkIf cfg.enable {
+    services.rscoin-notary.configFile = pkgs.writeText "rscoin-notary.conf" 
+    ''
+      bank {
+        host        = ${cfg.bank.host}
+        port        = ${toString cfg.bank.port}
+        publicKey   = ${cfg.bank.publicKey}
+      }
+      notary {
+        host        = ${cfg.host}
+        port        = ${toString cfg.port}
+      }
+    ''; 
+
+
     users = {
       users.rscoin-notary = {
         #note this is a hack since this is not commited to the nixpkgs
@@ -91,7 +96,7 @@ in
           "${rscoin}/bin/rscoin-notary"
           "--config-path ${cfg.configFile}"
           "--path ${stateDir}"
-        ]) + (if debug then " --log-severity Debug" else "");
+        ]) + (if cfg.debug then " --log-severity Debug" else "");
       };
     };
 
