@@ -32,6 +32,7 @@ let
         port = notaryPort;
       };
     };
+    networking.firewall.enable = false;
   };
 
   notary = {resources, ...}:{
@@ -55,6 +56,7 @@ let
         publicKey = pubKey;
       };
     };
+    networking.firewall.enable = false;
   };
 
   mintette = {resources, ...}:{
