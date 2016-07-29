@@ -1,6 +1,6 @@
 let
-  region = "eu-west-1";
-  accessKeyId = "dev";
+  region = "eu-central-1";
+  accessKeyId = "rscoin-guest-user";
 
   bankIp = "52.209.108.123";
   notaryIp = "52.17.237.225";

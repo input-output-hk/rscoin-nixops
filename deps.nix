@@ -3,8 +3,8 @@ with pkgs;
 rec{
   serokellCoreSrc = pkgs.fetchgit {
       url = "https://github.com/serokell/serokell-core.git";
-      rev = "a88dfced743c335f84a9ef814b3cd948ba051105";
-      sha256 = "1kr1h4dwaj70qi4pv6agg2i8jxsb3qxlqhc5qli90sadmw7jp1s3";
+      rev = "4093720681185aa8ca84911bf95da65917110b15";
+      sha256 = "0bn1hv5r8i1l15wvbspk6ixgzb7fyxxi122dkkq1vnwqkcrf7idh";
     };
 #  serokellCoreExtraDeps = with haskellPackagesExtended; [clock formatting];
 
