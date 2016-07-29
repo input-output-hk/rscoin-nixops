@@ -17,7 +17,12 @@ in
   options = {
     services.rscoin-bank = {
       enable = mkEnableOption name;
-      
+
+      port = mkOption {
+        type = types.int;
+        default = 3123;
+        description = ''a port'';
+      };
     };
   };
 
