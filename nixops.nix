@@ -1,14 +1,17 @@
 let
-  region = "eu-central-1";
-  accessKeyId = "rscoin-guest-user";
+  region = "eu-west-1";
+  accessKeyId = "dev";
 
   bankIp = "52.209.108.123";
   notaryIp = "52.17.237.225";
   bankPort = 8123;
   notaryPort = 3123;
 
-  pubKey = "YblQ7-YCmxU_4InsOwSGH4Mm37zGjgy7CLrlWlnHdnM=";
+  pubKey = "2qRGnwqNfgqUA6LI2spPyE3n0t76tzoi4qSqB1UNpsU=";
 
+
+# discription of the service types
+# important note, enable firewalls again.
   bank = {resources, pkgs, ...}:{
     deployment.targetEnv = "ec2";
     deployment.ec2.accessKeyId = accessKeyId;
@@ -128,6 +131,7 @@ let
       bankPubKey = pubKey;
     };
 
+# Want to have an extra user for external ssh access, use this:
 #     users.extraUsers.guest = {
 #       name = "rscoin";
 #       group = "users";
@@ -135,9 +139,9 @@ let
 #       createHome = true;
 #       home = "/home/rscoin";
 #       shell = "/run/current-system/sw/bin/bash";
+#       openssh.authorizedKeys.keys = [ "ssh-rsa AA....." ];
 #     };
-
-    services.openssh.enable = true;
+#    services.openssh.enable = true;
     
     environment.systemPackages = with pkgs; [
       git
@@ -164,6 +168,12 @@ let
 
 in
 {
+  #actual deployment of machines.
+  # want to add more machines of any type add them here.
+  # for example 
+  # rs-custom-mintette = mintette;
+  # would add another mintette server with the name rs-custom-mintette
+
   rs-bank = bank;
   rs-notary = notary;
   rs-mintette = mintette;
