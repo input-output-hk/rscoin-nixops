@@ -8,6 +8,11 @@ let
   notaryPort = 3123;
 
   pubKey = "k2oIF6OH7uXCM4HZj06SV0eV3EJQ6nNBeyXYEdSBY1g=";
+ 
+  volhovmKey = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDRMQ16PB/UvIEF+UIHfy66FNaBUWgviE2xuD5qoq/nXURBsHogGzv1ssdj1uaLdh7pZxmo/cRC+Y5f6dallIHHwdiKKOdRq1R/IWToMxnL/TTre+px6rxq21al9r4lvibelIU9vDn0R6OFZo+pRWyXUm33bQ4DVhwWiSls3Hw+9xRq4Pf2aWy//ey5CUTW+QkVdDIOFQG97kHDO3OdoNuaOMdeS+HBgH25bzSlcMw044T/NV9Cyi3y1eEBCoyqA9ba28GIl3vNADBdoQb5YYhBViFLaFsadzgWv5XWTpXV4Kwnq8ekmTcBkDzoTng/QOrDLsFMLo1nEMvhbFZopAfZ volhovm.cs@gmail.com";
+  shershKey = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDOgln1GGTaghj8cAyRd9wPJWfwsFBgGY0axzVno7hlwEySDWQCcMtUysQ5N16k3R/Wc234ELPG03yJks1wmV8lncyuGSm3iEPf1zDPE5wvZIGHOZmC6r5iLezYEFqK6itz2I7TbNrNaoabTbIaJD5KZzuclnnM07ZbGTT8a+udidoav0lsJOnfprSG07g7WAjrbNs0Kokt1WIl7Rr0KBYr79Ys8WZlbKKJthsl8nAiE6Gj+6VZjHYf28QkaiNB+9MJHaYYfE3muCw0TXaWbKSHW8Mfmyiz8FiKH4/cYVvhNSd3rTygz3JQoVlRcEQcSuAxIhLeYemOGQO0cUYfTlLF fenx@smachine";
+  akegaljKey = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCn11qMrU3M+k/S5ScA8C37pPB7XNxzOmBnF89NkjJ16JhZxlX5tqEfq2Arja+nEG6UB8Js/5MsWTRkVYK6pB+ju0RAb5qyYomU/zZBhf9yOLlWuXTCV1ptdwRxLptjRdJ9a9YC0q715ZnNoIhfbVoR8o/CYLBFKFdFcV8O87R6mWPJ1I2CgTtfW3zjlFD8xRXtirio5EzNaq/Tq4ClQdpAOlfwHErxfk/TQMFY7vLiBdd26YEn+zD95xF4EX9cT7A2BHFD3U7OioTOTiyRwhaP3dFPcy+51fKGvxhBXtdb0fu+OanjQjsezmnBXwzSprKJUj6VjFoB4yt5qHqj0ntx akegalj@gmail.com"; 
+  devKeys = [volhovmKey shershKey akegaljKey];
 
 # discription of the service types
 # important note, enable firewalls again.
@@ -30,6 +35,7 @@ let
 	home = "/home/rscoin";
 	shell = "/run/current-system/sw/bin/bash";
     };
+    users.extraUsers.root.openssh.authorizedKeys.keys = devKeys;
 
     environment.systemPackages = with pkgs; [
       git
@@ -64,6 +70,9 @@ let
 
     imports = [ ./rscoin-notary.nix ];
 
+    users.extraUsers.root.openssh.authorizedKeys.keys = devKeys;
+    services.openssh.enable = true;
+
     environment.systemPackages = with pkgs; [
       git
       tmux
@@ -96,8 +105,7 @@ let
 
     imports = [ ./rscoin-mintette.nix ];
 
-    users.extraUsers.root.openssh.authorizedKeys.keys = 
-      [ "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDRMQ16PB/UvIEF+UIHfy66FNaBUWgviE2xuD5qoq/nXURBsHogGzv1ssdj1uaLdh7pZxmo/cRC+Y5f6dallIHHwdiKKOdRq1R/IWToMxnL/TTre+px6rxq21al9r4lvibelIU9vDn0R6OFZo+pRWyXUm33bQ4DVhwWiSls3Hw+9xRq4Pf2aWy//ey5CUTW+QkVdDIOFQG97kHDO3OdoNuaOMdeS+HBgH25bzSlcMw044T/NV9Cyi3y1eEBCoyqA9ba28GIl3vNADBdoQb5YYhBViFLaFsadzgWv5XWTpXV4Kwnq8ekmTcBkDzoTng/QOrDLsFMLo1nEMvhbFZopAfZ volhovm.cs@gmail.com" ];
+    users.extraUsers.root.openssh.authorizedKeys.keys = devKeys;
     services.openssh.enable = true;
 
     environment.systemPackages = with pkgs; [
@@ -136,6 +144,9 @@ let
     deployment.ec2.securityGroups = ["rscoin-deploy-sec-group"];
 
     imports = [ ./rscoin-block-explorer.nix ];
+
+    services.openssh.enable = true;
+    users.extraUsers.root.openssh.authorizedKeys.keys = devKeys;
 
     services.rscoin-block-explorer = {
       enable = true;
