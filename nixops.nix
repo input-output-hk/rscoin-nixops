@@ -1,8 +1,8 @@
 let
-  region = "eu-west-1";
-  accessKeyId = "dev";
+  region = "eu-central-1";
+  accessKeyId = "rscoin-guest-user";
 
-  bankIp = "52.59.74.68";
+  bankIp = "52.59.5.254";
   notaryIp = "52.59.70.19";
   bankPort = 8123;
   notaryPort = 3123;
@@ -20,7 +20,7 @@ let
     deployment.targetEnv = "ec2";
     deployment.ec2.accessKeyId = accessKeyId;
     deployment.ec2.region = region;
-    deployment.ec2.instanceType = "t2.micro";
+    deployment.ec2.instanceType = "t2.medium";
     deployment.ec2.keyPair = resources.ec2KeyPairs.my-key-pair;
     deployment.ec2.securityGroups = ["rscoin-deploy-sec-group"];
 
@@ -203,7 +203,7 @@ in
 
   rs-bank = bank;
   rs-notary = notary;
-  rs-mintette = mintette;
+  rs-mintette1 = mintette;
   rs-mintette2 = mintette;
   rs-mintette3 = mintette;
   block-explorer = block-explorer;
