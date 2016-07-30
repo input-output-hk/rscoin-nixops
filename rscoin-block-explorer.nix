@@ -52,6 +52,15 @@ in
         default = "";
         description = "Verbatim contents of the config file.";
       };
+      debug= mkOption { 
+        type = types.bool;  
+        default = true;
+        description = "Debug output verbosity level.";
+      }; 
+      keyPath = mkOption {
+        default = "/secret/key.sec";
+        description = "Path to explorer's secret key.";
+      };
     };
   };
 
@@ -103,7 +112,8 @@ in
           "${rscoin}/bin/rscoin-explorer"
           "--config-path=${cfg.configFile}"
           "--port-web ${toString cfg.wsPort}"
-          "--sk /secret/key.sec"
+          "--sk ${cfg.keyPath}"
+          (if cfg.debug then " --log-severity Debug" else "")
         ];
       };
     };

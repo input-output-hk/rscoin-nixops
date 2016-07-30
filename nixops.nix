@@ -178,7 +178,7 @@ let
     ];
 
     networking.firewall = {
-      enable = true;
+      enable = false; # TODO ENABLE BACK!!!
       allowPing = true;
       allowedTCPPorts = [
         22
