@@ -103,6 +103,7 @@ in
           "${rscoin}/bin/rscoin-explorer"
           "--config-path=${cfg.configFile}"
           "--port-web ${toString cfg.wsPort}"
+          "--sk /secret/key.sec"
         ];
       };
     };
