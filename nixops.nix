@@ -9,8 +9,7 @@ let
 
   pubKey = "YblQ7-YCmxU_4InsOwSGH4Mm37zGjgy7CLrlWlnHdnM=";
 
-
-  bank = {resources, ...}:{
+  bank = {resources, pkgs, ...}:{
     deployment.targetEnv = "ec2";
     deployment.ec2.accessKeyId = accessKeyId;
     deployment.ec2.region = region;
@@ -19,6 +18,14 @@ let
     deployment.ec2.securityGroups = ["rscoin-deploy-sec-group"];
 
     imports = [ ./rscoin-bank.nix ];
+
+    environment.systemPackages = with pkgs; [
+      git
+      tmux
+      vim
+      nixops
+    ];
+
     services.rscoin-bank = {
       enable = true;
 
@@ -35,7 +42,7 @@ let
     networking.firewall.enable = false;
   };
 
-  notary = {resources, ...}:{
+  notary = {resources, pkgs, ...}:{
     deployment.targetEnv = "ec2";
     deployment.ec2.accessKeyId = accessKeyId;
     deployment.ec2.region = region;
@@ -44,6 +51,13 @@ let
     deployment.ec2.securityGroups = ["rscoin-deploy-sec-group"];
 
     imports = [ ./rscoin-notary.nix ];
+
+    environment.systemPackages = with pkgs; [
+      git
+      tmux
+      vim
+      nixops
+    ];
 
     services.rscoin-notary = {
       enable = true;
@@ -59,7 +73,7 @@ let
     networking.firewall.enable = false;
   };
 
-  mintette = {resources, ...}:{
+  mintette = {resources, pkgs, ...}:{
     deployment.targetEnv = "ec2";
     deployment.ec2.accessKeyId = accessKeyId;
     deployment.ec2.region = region;
@@ -68,6 +82,13 @@ let
     deployment.ec2.securityGroups = ["rscoin-deploy-sec-group"];
 
     imports = [ ./rscoin-mintette.nix ];
+
+    environment.systemPackages = with pkgs; [
+      git
+      tmux
+      vim
+      nixops
+    ];
 
     services.rscoin-mintette = {
       enable = true;
