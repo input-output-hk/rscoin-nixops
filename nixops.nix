@@ -9,6 +9,10 @@ let
 
   pubKey = "k2oIF6OH7uXCM4HZj06SV0eV3EJQ6nNBeyXYEdSBY1g=";
 
+<<<<<<< c6b61ea28b2cfbd2abb82bf6567ecb741e465fa5
+=======
+
+>>>>>>> Fix central after rebase (?)
 # discription of the service types
 # important note, enable firewalls again.
   bank = {resources, pkgs, ...}:{
