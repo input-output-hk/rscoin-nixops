@@ -6,6 +6,9 @@ let
   notaryIp = "52.59.70.19";
   bankPort = 8123;
   notaryPort = 3123;
+  mintettePort = 3001;
+  explorerRpcPort = 5432;
+  explorerWebPort = 8000;
 
   pubKey = "k2oIF6OH7uXCM4HZj06SV0eV3EJQ6nNBeyXYEdSBY1g=";
  
@@ -56,7 +59,13 @@ let
         port = notaryPort;
       };
     };
-    networking.firewall.enable = false;
+
+    networking.firewall = {
+      enable = true;
+      allowPing = true;
+      allowedTCPPorts = [ 22 bankPort ];
+    };
+
   };
 
   notary = {resources, pkgs, ...}:{
@@ -86,7 +95,12 @@ let
         publicKey = pubKey;
       };
     };
-    networking.firewall.enable = false;
+
+    networking.firewall = {
+      enable = true;
+      allowPing = true;
+      allowedTCPPorts = [ 22 notaryPort ];
+    };
   };
 
   mintette = {resources, pkgs, ...}:{
@@ -106,7 +120,8 @@ let
 
     services.rscoin-mintette = {
       enable = true;
-      port = 3001;
+   
+      port = mintettePort;
 
       notary = {
         host = notaryIp;
@@ -120,7 +135,11 @@ let
       };
     };
 
-    networking.firewall.enable = false;
+    networking.firewall = {
+      enable = true;
+      allowPing = true;
+      allowedTCPPorts = [ 22 mintettePort ];
+    };
   };
 
 
@@ -162,15 +181,16 @@ let
     environment.systemPackages = defaultPackages { inherit pkgs; };
 
     networking.firewall = {
-      enable = false; # TODO ENABLE BACK!!!
+      enable = true; 
       allowPing = true;
       allowedTCPPorts = [
         22
-        80 443           # http/https
+        explorerRpcPort explorerWebPort
+        80 443                          # http/https
       ];
       allowedUDPPorts = [
 #         655              # tinc
-        #50428 35948 53913 51413 5350 5351 # transmission
+#         50428 35948 53913 51413 5350 5351 # transmission
 #         64738            # murmurd (mumble)
       ];
     };
