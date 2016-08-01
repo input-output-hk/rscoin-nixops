@@ -14,6 +14,10 @@ let
   akegaljKey = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCn11qMrU3M+k/S5ScA8C37pPB7XNxzOmBnF89NkjJ16JhZxlX5tqEfq2Arja+nEG6UB8Js/5MsWTRkVYK6pB+ju0RAb5qyYomU/zZBhf9yOLlWuXTCV1ptdwRxLptjRdJ9a9YC0q715ZnNoIhfbVoR8o/CYLBFKFdFcV8O87R6mWPJ1I2CgTtfW3zjlFD8xRXtirio5EzNaq/Tq4ClQdpAOlfwHErxfk/TQMFY7vLiBdd26YEn+zD95xF4EX9cT7A2BHFD3U7OioTOTiyRwhaP3dFPcy+51fKGvxhBXtdb0fu+OanjQjsezmnBXwzSprKJUj6VjFoB4yt5qHqj0ntx akegalj@gmail.com"; 
   devKeys = [volhovmKey shershKey akegaljKey];
 
+  defaultPackages = { pkgs }:
+    let rscoin = import ./default.nix { inherit pkgs; };
+    in with pkgs; [ git tmux vim nixops rscoin ];
+
 # discription of the service types
 # important note, enable firewalls again.
   bank = {resources, pkgs, ...}:{
@@ -37,12 +41,7 @@ let
     };
     users.extraUsers.root.openssh.authorizedKeys.keys = devKeys;
 
-    environment.systemPackages = with pkgs; [
-      git
-      tmux
-      vim
-      nixops
-    ];
+    environment.systemPackages = defaultPackages { inherit pkgs; };
 
     services.rscoin-bank = {
       enable = true;
@@ -73,12 +72,7 @@ let
     users.extraUsers.root.openssh.authorizedKeys.keys = devKeys;
     services.openssh.enable = true;
 
-    environment.systemPackages = with pkgs; [
-      git
-      tmux
-      vim
-      nixops
-    ];
+    environment.systemPackages = defaultPackages { inherit pkgs; };
 
     services.rscoin-notary = {
       enable = true;
@@ -108,12 +102,7 @@ let
     users.extraUsers.root.openssh.authorizedKeys.keys = devKeys;
     services.openssh.enable = true;
 
-    environment.systemPackages = with pkgs; [
-      git
-      tmux
-      vim
-      nixops
-    ];
+    environment.systemPackages = defaultPackages { inherit pkgs; };
 
     services.rscoin-mintette = {
       enable = true;
@@ -169,13 +158,8 @@ let
 #       openssh.authorizedKeys.keys = [ "ssh-rsa AA....." ];
 #     };
 #    services.openssh.enable = true;
-    
-    environment.systemPackages = with pkgs; [
-      git
-      tmux
-      vim
-      nixops
-    ];
+
+    environment.systemPackages = defaultPackages { inherit pkgs; };
 
     networking.firewall = {
       enable = false; # TODO ENABLE BACK!!!
