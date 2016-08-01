@@ -11,6 +11,19 @@ let
 
   rscoin = pkgs.callPackage ./default.nix { };
   block-explorer-static-files = pkgs.callPackage ./block-explorer/default.nix { };
+
+  rscoinConfig = pkgs.writeText "rscoin-block-explorer.conf" ''
+      bank {
+        host       = "${cfg.bankIP}"
+        port       = ${toString cfg.bankPort}
+        publicKey  = "${cfg.bankPubKey}"
+      }
+
+      notary {
+        host = "${cfg.notaryIP}"
+        port = ${toString cfg.notaryPort}
+      }
+    '';
 in
 {
   options = {
@@ -65,18 +78,8 @@ in
   };
 
   config = mkIf cfg.enable {
-    services.rscoin-block-explorer.configFile = pkgs.writeText "rscoin-block-explorer.conf" ''
-      bank {
-        host       = "${cfg.bankIP}"
-        port       = ${toString cfg.bankPort}
-        publicKey  = "${cfg.bankPubKey}"
-      }
-
-      notary {
-        host = "${cfg.notaryIP}"
-        port = ${toString cfg.notaryPort}
-      }
-    '';
+    services.rscoin-block-explorer.configFile = rscoinConfig;
+ 
     users = {
       users.rscoin-block-explorer = {
         #note this is a hack since this is not commited to the nixpkgs
@@ -92,6 +95,8 @@ in
         gid = 2147483646;
       };
     };
+
+    environment.variables = { RSCOIN_CONFIG = "${rscoinConfig}"; };
 
     systemd.services.rscoin-explorer = {
       description   = "rscoin block explorer service";

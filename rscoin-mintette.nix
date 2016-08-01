@@ -9,6 +9,19 @@ let
 
   stateDir = "/var/lib/rscoin-mintette/";
   rscoin = pkgs.callPackage ./default.nix { };
+  
+  rscoinConfig = pkgs.writeText "rscoin-mintette.conf" 
+    ''
+      bank {
+        host        = "${cfg.bank.host}"
+        port        = ${toString cfg.bank.port}
+        publicKey   = "${cfg.bank.publicKey}"
+      }
+      notary {
+        host        = "${cfg.notary.host}"
+        port        = ${toString cfg.notary.port}
+      }
+    '';
 in
 {
   options = {
@@ -55,19 +68,7 @@ in
   };
 
   config = mkIf cfg.enable {
-    services.rscoin-mintette.configFile = pkgs.writeText "rscoin-mintette.conf" 
-    ''
-      bank {
-        host        = "${cfg.bank.host}"
-        port        = ${toString cfg.bank.port}
-        publicKey   = "${cfg.bank.publicKey}"
-      }
-      notary {
-        host        = "${cfg.notary.host}"
-        port        = ${toString cfg.notary.port}
-      }
-    '';
-
+    services.rscoin-mintette.configFile = rscoinConfig;
 
     users = {
       users.rscoin-mintette = {
@@ -83,6 +84,8 @@ in
       };
     };
 
+    environment.variables = { RSCOIN_CONFIG = "${rscoinConfig}"; };
+    
     systemd.services.rscoin-mintette = {
       description   = "rscoin mintette service";
       wantedBy      = [ "multi-user.target" ];

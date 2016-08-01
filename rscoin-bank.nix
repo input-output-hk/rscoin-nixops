@@ -9,6 +9,20 @@ let
 
   stateDir = "/var/lib/rscoin-bank/";
   rscoin = pkgs.callPackage ./default.nix { };
+  
+  rscoinConfig = pkgs.writeText "rscoin-bank.conf" 
+    ''
+      bank {
+        host        = "${cfg.host}"
+        port        = ${toString cfg.port}
+        publicKey   = "${cfg.publicKey}"
+      }
+
+      notary {
+        host        = "${cfg.notary.host}"
+        port        = ${toString cfg.notary.port}
+      }
+    '';
 in
 {
   options = {
@@ -56,20 +70,7 @@ in
   };
 
   config = mkIf cfg.enable {
-    services.rscoin-bank.configFile = pkgs.writeText "rscoin-bank.conf" 
-    ''
-      bank {
-        host        = "${cfg.host}"
-        port        = ${toString cfg.port}
-        publicKey   = "${cfg.publicKey}"
-      }
-
-      notary {
-        host        = "${cfg.notary.host}"
-        port        = ${toString cfg.notary.port}
-      }
-    '';
-
+    services.rscoin-bank.configFile = rscoinConfig;
     users = {
       users.rscoin-bank = {
         uid             = 2147483646;
@@ -83,6 +84,8 @@ in
         gid = 2147483646;
       };
     };
+
+    environment.variables = { RSCOIN_CONFIG = "${rscoinConfig}"; };
 
     systemd.services.rscoin-bank = {
       description   = "rscoin bank service";
