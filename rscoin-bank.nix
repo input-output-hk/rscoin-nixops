@@ -66,6 +66,12 @@ in
         default = "";
         description = "Verbatim contents of the config file.";
       };
+
+      periodDelta = mkOption {
+        type = types.int;
+        default = 100;
+        description = "Period delta in seconds.";
+      };
     };
   };
 
@@ -106,6 +112,7 @@ in
           "${rscoin}/bin/rscoin-bank serve"
           "--config-path ${cfg.configFile}"
           "-k ${cfg.skPath}"
+          "--period-delta ${toString cfg.periodDelta}"
           (if cfg.debug then " --log-severity Debug" else "")
         ];
       };
