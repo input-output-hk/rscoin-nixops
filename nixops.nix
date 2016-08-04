@@ -6,7 +6,7 @@ let
   notaryIp = "52.59.70.19";
   bankPort = 8123;
   notaryPort = 3123;
-  mintettePort = 3001;
+  mintettePort = 3100;
   explorerRpcPort = 5432;
   explorerWebPort = 8000;
 

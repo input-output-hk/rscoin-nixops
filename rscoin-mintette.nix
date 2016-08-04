@@ -38,7 +38,7 @@ in
 
       skPath = mkOption {
         type = types.path;
-        default = "/secret/key.sec" ;
+        default = builtins.toPath "/var/lib/rscoin-mintette/.rscoin/mintette${toString cfg.port}Key";
         description = "the path to the secret bank key";
       };
 
@@ -106,6 +106,7 @@ in
           "--config-path ${cfg.configFile}"
           "--port ${toString cfg.port}"
           "--sk ${cfg.skPath}"
+          "--auto-create-sk"
           (if cfg.debug then " --log-severity Debug" else "")
         ];
       };
