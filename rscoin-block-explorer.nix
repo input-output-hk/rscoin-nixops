@@ -61,6 +61,11 @@ in
         default = 3001;
         description = ''The TCP port where rscoin-explorer will listen with a `websocket`.'';
       };
+      rpcPort = mkOption {
+        type = types.int;
+        default = 3000;
+        description = "The TCP port where rscoin-explorer will be pinged by `bank`.";
+      };
       configFile = mkOption {
         default = "";
         description = "Verbatim contents of the config file.";
@@ -116,6 +121,7 @@ in
         ExecStart = toString [
           "${rscoin}/bin/rscoin-explorer"
           "--config-path=${cfg.configFile}"
+          "--port-rpc ${toString cfg.rpcPort}"
           "--port-web ${toString cfg.wsPort}"
           "--sk ${cfg.keyPath}"
           (if cfg.debug then " --log-severity Debug" else "")
