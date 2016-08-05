@@ -142,9 +142,17 @@ in
             access_log ${stateDir}/access.log;
             listen ${toString cfg.port};
             root ${block-explorer-static-files}/share/;
+ 
+            location /index.html { 
+#              rewrite ^/index\.html$ / break;
+            }
 
+            location / {
+              rewrite ^/address/.*$ / break;
+            } 
+ 
             location /websocket {
-              proxy_pass http://localhost:3001/websocket;
+              proxy_pass http://localhost:${toString cfg.wsPort}/websocket;
               proxy_http_version 1.1;
               proxy_set_header Upgrade $http_upgrade;
               proxy_set_header Connection "upgrade";
