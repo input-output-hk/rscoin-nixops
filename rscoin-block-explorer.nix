@@ -144,11 +144,10 @@ in
             root ${block-explorer-static-files}/share/;
  
             location /index.html { 
-#              rewrite ^/index\.html$ / break;
             }
 
             location / {
-              rewrite ^/address/.*$ / break;
+              rewrite ^/[a-zA-Z0-9]+/.*$ / break;
             } 
  
             location /websocket {
