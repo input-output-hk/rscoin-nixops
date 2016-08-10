@@ -2,7 +2,7 @@ let
   region = "eu-central-1";
   accessKeyId = "rscoin-guest-user";
 
-  bankIp = "52.58.179.137";   # Elastic
+  bankIp   = "52.59.88.186";  # Elastic
   notaryIp = "52.58.179.137"; # Elastic
   bankPort = 8123;
   notaryPort = 3123;
@@ -30,7 +30,7 @@ let
     deployment.ec2.instanceType = "t2.medium";
     deployment.ec2.keyPair = resources.ec2KeyPairs.my-key-pair;
     deployment.ec2.securityGroups = ["rscoin-deploy-sec-group"];
-    deployment.ec2.elasticIPv4 = "52.59.88.186";
+    deployment.ec2.elasticIPv4 = bankIp;
 
     imports = [ ./rscoin-bank.nix ];
 
@@ -77,7 +77,7 @@ let
     deployment.ec2.instanceType = "t2.micro";
     deployment.ec2.keyPair = resources.ec2KeyPairs.my-key-pair;
     deployment.ec2.securityGroups = ["rscoin-deploy-sec-group"];
-    deployment.ec2.elasticIPv4 = "52.58.179.137";
+    deployment.ec2.elasticIPv4 = notaryIp;
 
     imports = [ ./rscoin-notary.nix ];
 
