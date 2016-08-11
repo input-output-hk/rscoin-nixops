@@ -36,7 +36,7 @@ in
 
       publicKey = mkOption {
         type = types.string;
-        default = "YblQ7+YCmxU/4InsOwSGH4Mm37zGjgy7CLrlWlnHdnM=";
+#        default = "YblQ7+YCmxU/4InsOwSGH4Mm37zGjgy7CLrlWlnHdnM=";
       };
       
       port = mkOption {
@@ -46,7 +46,7 @@ in
 
       skPath = mkOption {
         type = types.path;
-        default = "/secret/bank.sec" ;
+        default = builtins.toPath "${stateDir}/.rscoin/bankKey";
         description = "the path to the secret bank key";
       };
 

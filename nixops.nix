@@ -54,7 +54,6 @@ let
       host = bankIp;
       port = bankPort;
       publicKey = pubKey;
-      skPath = "/secret/key.sec";
       periodDelta = 300;
 
       notary = {
