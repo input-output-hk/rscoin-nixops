@@ -36,7 +36,6 @@ in
 
       publicKey = mkOption {
         type = types.string;
-#        default = "YblQ7+YCmxU/4InsOwSGH4Mm37zGjgy7CLrlWlnHdnM=";
       };
       
       port = mkOption {
