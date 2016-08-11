@@ -113,6 +113,7 @@ in
           "--config-path ${cfg.configFile}"
           "-k ${cfg.skPath}"
           "--period-delta ${toString cfg.periodDelta}"
+          "--auto-create-sk"
           (if cfg.debug then " --log-severity Debug" else "")
         ];
       };
