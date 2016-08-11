@@ -15,3 +15,5 @@ echo "Bank's public key is $bankKey"
 sed -i -e "s/\s*pubKey\s*=\s*.*/  pubKey = \"$bankKey\";/" nixops.nix 
 echo "Redeploying with new generated key"
 deploy
+echo "Adding explorer"
+./addexplorer.sh
