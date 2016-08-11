@@ -76,7 +76,7 @@ in
         description = "Debug output verbosity level.";
       }; 
       keyPath = mkOption {
-        default = "/secret/key.sec";
+        default = "${stateDir}/.rscoin/explorerKey";
         description = "Path to explorer's secret key.";
       };
     };
@@ -123,6 +123,7 @@ in
           "--config-path=${cfg.configFile}"
           "--port-rpc ${toString cfg.rpcPort}"
           "--port-web ${toString cfg.wsPort}"
+          "--auto-create-sk"
           "--sk ${cfg.keyPath}"
           (if cfg.debug then " --log-severity Debug" else "")
         ];

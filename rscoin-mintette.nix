@@ -38,7 +38,7 @@ in
 
       skPath = mkOption {
         type = types.path;
-        default = builtins.toPath "/var/lib/rscoin-mintette/.rscoin/mintette${toString cfg.port}Key";
+        default = builtins.toPath "${stateDir}/.rscoin/mintette${toString cfg.port}Key";
         description = "the path to the secret bank key";
       };
 
