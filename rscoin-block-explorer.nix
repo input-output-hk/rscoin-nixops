@@ -56,7 +56,7 @@ in
         default = 1234;
         description = ''The TCP port where rscoin-explorer will expect a `notary` instance.'';
       };
-      wsPort = mkOption {
+      webPort = mkOption {
         type = types.int;
         default = 3001;
         description = ''The TCP port where rscoin-explorer will listen with a `websocket`.'';
@@ -122,7 +122,7 @@ in
           "${rscoin}/bin/rscoin-explorer"
           "--config-path=${cfg.configFile}"
           "--port-rpc ${toString cfg.rpcPort}"
-          "--port-web ${toString cfg.wsPort}"
+          "--port-web ${toString cfg.webPort}"
           "--auto-create-sk"
           "--sk ${cfg.keyPath}"
           (if cfg.debug then " --log-severity Debug" else "")
@@ -152,7 +152,7 @@ in
             } 
  
             location /websocket {
-              proxy_pass http://localhost:${toString cfg.wsPort}/websocket;
+              proxy_pass http://localhost:${toString cfg.webPort}/websocket;
               proxy_http_version 1.1;
               proxy_set_header Upgrade $http_upgrade;
               proxy_set_header Connection "upgrade";
