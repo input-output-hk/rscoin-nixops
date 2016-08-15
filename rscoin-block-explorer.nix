@@ -148,7 +148,7 @@ in
             }
 
             location / {
-              rewrite ^/\w+/.*$ / break;
+              rewrite ^/(address|tx)/.*$ / break;
             } 
  
             location /websocket {
