@@ -98,7 +98,6 @@ in
         ExecStart = (toString [
           "${rscoin}/bin/rscoin-notary"
           "--config-path ${cfg.configFile}"
-          "--path ${stateDir}"
         ]) + (if cfg.debug then " --log-severity Debug" else "");
       };
     };
