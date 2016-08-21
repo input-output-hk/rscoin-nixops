@@ -9,8 +9,8 @@ deps.haskellPackagesExtended.mkDerivation { # haskell.lib.buildStackProject {
   version = "0.1.0.0";
   src = pkgs.fetchgit {
     url = "https://github.com/serokell/rscoin";
-    rev = "16842e3471af8fe0e550ca466e0e9003780f6e91";
-    sha256 = "11ji4xqqz1ciz3sghp0x3wrvfn10a1xcxq4hcknwx3n8alpsmdwb";
+    rev = "9da548c1a4b5d9d9d34f0e0a1c9ef53ac8b8a64f";
+    sha256 = "059fxrv9i022v60w7mmd2hc87qb91bjcfak6i0pq6rds4lbs6lk8";
   };
 
   isLibrary = true;
