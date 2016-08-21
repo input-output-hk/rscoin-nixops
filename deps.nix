@@ -7,8 +7,8 @@ with pkgs; rec {
     version = "0.1.0.0";
     src = pkgs.fetchgit {
       url = "https://github.com/serokell/serokell-core.git";
-      rev = "4093720681185aa8ca84911bf95da65917110b15";
-      sha256 = "0bn1hv5r8i1l15wvbspk6ixgzb7fyxxi122dkkq1vnwqkcrf7idh";
+      rev = "abd1e9090b5921930764f8a2de859d57b6a57fc1";
+      sha256 = "1qxxk67cyfbl9wd8dsah0f7hlz3r59wdqbyn5pi5haqldb44kipf";
     };
     isLibrary = true;
     isExecutable = true;
