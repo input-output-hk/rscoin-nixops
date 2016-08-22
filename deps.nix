@@ -93,12 +93,32 @@ with pkgs; rec {
     license = pkgs.stdenv.lib.licenses.gpl3;
   };
 
+  acid-statePackage = haskellPackagesExtended.mkDerivation {
+    pname = "acid-state";
+    version = "0.14.1";
+    src = pkgs.fetchgit {
+      url = "https://github.com/serokell/acid-state.git";
+      rev = "ad77e909bcd46c3e44eeca558eb8a6f1ff3600eb";
+      sha256 = "1jl1j0v9wplqz2ayq2af6hnvisp9ysvnf2f77a5ykn9zik8qbhrg";
+    };
+
+    isLibrary = true;
+    doCheck = false;
+
+    libraryHaskellDepends = with haskellPackagesExtended; [
+       array base bytestring cereal containers directory extensible-exceptions 
+       filepath mtl network safecopy stm template-haskell unix
+    ];
+    license = pkgs.stdenv.lib.licenses.publicDomain;
+  };
+
   haskellPackagesExtended  = pkgs.haskell.packages.lts-6_7.override {
     overrides = self: super: {
       serokell-core = serokellPackage;
       msgpack = msgpackPackage;
       msgpack-rpc = msgpack-rpcPackage;
       msgpack-aeson = msgpack-aesonPackage;
+      acid-state = acid-statePackage;
     };
   };
 
