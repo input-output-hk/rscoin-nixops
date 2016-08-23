@@ -13,9 +13,9 @@ function parseNixopsPort {
     cat nixops.nix | grep -E "$1\s*=\s*[0-9]+" | sed -e "s/.*=\s*\([0-9]\+\);.*/\1/" 
 }
 
-NIXOPS_BANK_HOST = $(parseNixopsIp bankIp)
-NIXOPS_BANK_PORT = $(parseNixopsPort bankPort)
-#NIXOPS_NOTARY_HOST = $(parseNixopsPort notaryIp)
-#NIXOPS_NOTARY_PORT = $(parseNixopsPort notaryPort)
-NIXOPS_MINTETTE_PORT = $(parseNixopsPort mintettePort)
-NIXOPS_EXPLORER_PORT = $(parseNixopsPort explorerRpcPort)
+NIXOPS_BANK_HOST=$(parseNixopsIp bankIp)
+NIXOPS_BANK_PORT=$(parseNixopsPort bankPort)
+#NIXOPS_NOTARY_HOST=$(parseNixopsPort notaryIp)
+#NIXOPS_NOTARY_PORT=$(parseNixopsPort notaryPort)
+NIXOPS_MINTETTE_PORT=$(parseNixopsPort mintettePort)
+NIXOPS_EXPLORER_PORT=$(parseNixopsPort explorerRpcPort)
