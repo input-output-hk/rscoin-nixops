@@ -108,6 +108,7 @@ in
           "--sk ${cfg.skPath}"
           "--auto-create-sk"
           (if cfg.debug then " --log-severity Debug" else "")
+          "serve"
         ];
       };
     };

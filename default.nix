@@ -9,8 +9,8 @@ deps.haskellPackagesExtended.mkDerivation { # haskell.lib.buildStackProject {
   version = "0.1.0.0";
   src = pkgs.fetchgit {
     url = "https://github.com/input-output-hk/rscoin-haskell";
-    rev = "52258dfe4c3c22badfa504f54fb10173037ddb6e";
-    sha256 = "19pm7nzl6nj0md5fx6a7c51g15h4pwnq4ypij3d07517chr0sf87";
+    rev = "b0c6d869bf7e6acce53e0813a28c42ad2cbad155";
+    sha256 = "061j7imw32lidy5w0zy8fkdw35j6h8qjb0mfvpskaqi337rama63";
   };
 
   isLibrary = true;
