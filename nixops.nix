@@ -1,6 +1,7 @@
 let
-  region = "eu-central-1";
-  accessKeyId = "rscoin-guest-user";
+  region = "eu-central-1";                   # The region
+  accessKeyId = "rscoin-guest-user";         # Doesn't depend on a region
+  securityGroup = "rscoin-deploy-sec-group"; # Does depend on a region
 
   bankIp     = "52.59.88.186";  # Elastic
   notaryIp   = "52.58.179.137"; # Elastic
@@ -30,7 +31,7 @@ let
     deployment.ec2.region = region;
     deployment.ec2.instanceType = "t2.medium";
     deployment.ec2.keyPair = resources.ec2KeyPairs.my-key-pair;
-    deployment.ec2.securityGroups = ["rscoin-deploy-sec-group"];
+    deployment.ec2.securityGroups = [securityGroup];
     deployment.ec2.elasticIPv4 = bankIp;
 
     imports = [ ./rscoin-bank.nix ];
@@ -75,7 +76,7 @@ let
     deployment.ec2.region = region;
     deployment.ec2.instanceType = "t2.micro";
     deployment.ec2.keyPair = resources.ec2KeyPairs.my-key-pair;
-    deployment.ec2.securityGroups = ["rscoin-deploy-sec-group"];
+    deployment.ec2.securityGroups = [securityGroup];
     deployment.ec2.elasticIPv4 = notaryIp;
 
     imports = [ ./rscoin-notary.nix ];
@@ -111,7 +112,7 @@ let
     deployment.ec2.region = region;
     deployment.ec2.instanceType = "t2.micro";
     deployment.ec2.keyPair = resources.ec2KeyPairs.my-key-pair;
-    deployment.ec2.securityGroups = ["rscoin-deploy-sec-group"];
+    deployment.ec2.securityGroups = [securityGroup];
 
     imports = [ ./rscoin-mintette.nix ];
 
@@ -151,7 +152,7 @@ let
     deployment.ec2.region = region;
     deployment.ec2.instanceType = "t2.micro";
     deployment.ec2.keyPair = resources.ec2KeyPairs.my-key-pair;
-    deployment.ec2.securityGroups = ["rscoin-deploy-sec-group"];
+    deployment.ec2.securityGroups = [securityGroup];
     deployment.ec2.elasticIPv4 = explorerIp;
 
     imports = [ ./rscoin-block-explorer.nix ];
