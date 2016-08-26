@@ -11,6 +11,7 @@ sleep 1
 deploy
 echo "Querying bank key"
 bankKey=$(nixops ssh rs-bank -- cat /var/lib/rscoin-bank/.rscoin/bankKey.pub)
+if [ -z $bankKey ]; then echo "[Error]. Bank key wasn't retrieved. Exiting." && exit; fi
 echo "Bank's public key is $bankKey"
 sed -i -e "s/\s*pubKey\s*=\s*.*/  pubKey = \"$bankKey\";/" nixops.nix 
 echo "Redeploying with new generated key"
