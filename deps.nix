@@ -2,13 +2,13 @@
 
 with pkgs; rec {
 
-  serokellPackage = haskellPackagesExtended.mkDerivation {
+  serokell-corePackage = haskellPackagesExtended.mkDerivation {
     pname = "serokell-core";
     version = "0.1.0.0";
     src = pkgs.fetchgit {
       url = "https://github.com/serokell/serokell-core.git";
-      rev = "db7cde4e096eb6b4167b16b90aea0767895481ca";
-      sha256 = "0iqm3im90rpf2rfw897qpzkfal9jxyqiqh02v6ysc21072hi93ns";
+      rev = "afc6f36b6e8e2eb85bcb27bb8d856fec7cf927b6";
+      sha256 = "0lpwbqr3dgz6mdxlxsszhn3n5mqyyawjjsykjv56a8nr1hd7nhnr";
     };
 
     isLibrary = true;
@@ -18,14 +18,45 @@ with pkgs; rec {
     libraryHaskellDepends = with haskellPackagesExtended; [
        acid-state base64-bytestring either lens optparse-applicative time-units
        either aeson clock formatting
+       base16-bytestring binary-orphans cereal-vector msgpack 
     ];
     license = pkgs.stdenv.lib.licenses.gpl3;
   };
 
+  rscoin-corePackage = haskellPackagesExtended.mkDerivation {
+    pname = "rscoin-core";
+    version = "0.1.0.0";
+    src = pkgs.fetchgit {
+        url = "https://github.com/input-output-hk/rscoin-core.git";
+        rev = "c4014e9cf2aa27e98a5e6d5659c14385e17b0c18";
+        sha256 = "0m1j72ghzm7ijjb5mwk9zmwpqr4n91xfr6y041q9xiw0k04dk7g1";
+      };
+    libraryHaskellDepends = with haskellPackagesExtended; [
+      aeson ansi-terminal base base64-bytestring binary binary-orphans
+      blake2 bytestring cereal conduit-extra configurator containers
+      data-default directory ed25519 either exceptions extra file-embed
+      filepath formatting hashable hslogger lens lifted-base
+      monad-control monad-loops MonadRandom msgpack msgpack-rpc mtl
+      pqueue QuickCheck quickcheck-instances random safe safecopy
+      scientific serokell-core stm template-haskell text text-format time
+      time-units transformers transformers-base tuple
+      unordered-containers vector warp websockets yaml
+      time-warp
+    ];
+    testHaskellDepends = with haskellPackagesExtended; [
+      aeson async base binary bytestring containers data-default either
+      exceptions extra formatting hashable hspec lens MonadRandom msgpack
+      msgpack-rpc mtl QuickCheck random safe safecopy serokell-core stm
+      text text-format time-units transformers unordered-containers
+      vector time-warp
+    ];
+    license = stdenv.lib.licenses.gpl3;
+  };
+
   msgpackGIT = pkgs.fetchgit {
     url = "https://github.com/serokell/msgpack-haskell.git";
-    rev = "ec26163035b049bfeff09444a7142a6ce7332493";
-    sha256 = "0968icqkzizlvnylgzaqbyz114j866ccklcx464n8vf3k8haza9g";
+    rev = "c84c868a37446ee0671b3c641a6155af142e6d78";
+    sha256 = "17ikw3fp1mnq9lbw439sgc3msq5dpxhyan70g9iywy5vs11pdrm0";
   };
 
   msgpackPackage = haskellPackagesExtended.mkDerivation {
@@ -72,26 +103,26 @@ with pkgs; rec {
     license = pkgs.stdenv.lib.licenses.gpl3;
   };
 
-  msgpack-aesonPackage = haskellPackagesExtended.mkDerivation {
-    pname = "msgpack-aeson";
-    version = "0.1.0.0";
-    src = msgpackGIT;
-    isLibrary = true;
-    isExecutable = true;
-    doCheck = false;
+  #msgpack-aesonPackage = haskellPackagesExtended.mkDerivation {
+  #  pname = "msgpack-aeson";
+  #  version = "0.1.0.0";
+  #  src = msgpackGIT;
+  #  isLibrary = true;
+  #  isExecutable = true;
+  #  doCheck = false;
 
-    # HACK best workaround ever
-    patchPhase = ''
-      mv msgpack-aeson .msgpack-aeson
-      rm -Rf *
-      mv .msgpack-aeson/* .
-    '';
+  #  # HACK best workaround ever
+  #  patchPhase = ''
+  #    mv msgpack-aeson .msgpack-aeson
+  #    rm -Rf *
+  #    mv .msgpack-aeson/* .
+  #  '';
 
-    libraryHaskellDepends = with haskellPackagesExtended; [
-       msgpackPackage base aeson bytestring scientific text unordered-containers vector deepseq
-    ];
-    license = pkgs.stdenv.lib.licenses.gpl3;
-  };
+  #  libraryHaskellDepends = with haskellPackagesExtended; [
+  #     msgpackPackage base aeson bytestring scientific text unordered-containers vector deepseq
+  #  ];
+  #  license = pkgs.stdenv.lib.licenses.gpl3;
+  #};
 
   acid-statePackage = haskellPackagesExtended.mkDerivation {
     pname = "acid-state";
@@ -112,48 +143,109 @@ with pkgs; rec {
     license = pkgs.stdenv.lib.licenses.publicDomain;
   };
 
-  haskellPackagesExtended  = pkgs.haskell.packages.lts-6_7.override {
+  time-warpPackage = haskellPackagesExtended.mkDerivation {
+    pname = "time-warp";
+    version = "0.1.0.0";
+    src = pkgs.fetchgit {
+      url = "https://github.com/serokell/time-warp";
+      rev = "0735958621c5a379fd98839564c62e7b60711f88";
+      sha256 = "1qhfnnrpl6wc9m6qdpdjgm03vfkwgc9c1walv9zv87h68v50s665";
+    };
+    libraryHaskellDepends = with haskellPackagesExtended; [
+      ansi-terminal base base64-bytestring binary binary-orphans
+      bytestring cereal conduit-extra containers data-default directory
+      either exceptions extra file-embed filepath formatting hashable
+      hslogger lens lifted-base monad-control monad-loops MonadRandom
+      msgpack msgpack-rpc mtl pqueue QuickCheck quickcheck-instances
+      random safe safecopy serokell-core stm template-haskell text
+      text-format time time-units transformers transformers-base tuple
+      unordered-containers vector warp websockets yaml
+    ];
+    testHaskellDepends = with haskellPackagesExtended; [
+      aeson async base binary bytestring containers data-default either
+      exceptions extra formatting hashable hspec lens MonadRandom msgpack
+      msgpack-rpc mtl QuickCheck random safe safecopy serokell-core stm
+      text text-format time-units transformers unordered-containers
+      vector
+    ];
+    homepage = "http://gitlab.serokell.io/serokell-team/time-warp";
+    description = "TODO";
+    license = stdenv.lib.licenses.gpl3;
+  };
+
+  purescript-bridgePackage = haskellPackagesExtended.mkDerivation {
+    pname = "purescript-bridge";
+    version = "0.8.0.0";
+     src = pkgs.fetchgit {
+      url = "https://github.com/eskimor/purescript-bridge.git";
+      rev = "8b6e3960dd86a517f5fd37ec648957b220818396";
+      sha256 = "188mb6hnc5brhs71q445xd6sqsjd47lnw5xs83g9wk6f0nxswav7";
+    };
+    libraryHaskellDepends = with haskellPackagesExtended; [
+      base containers directory filepath generic-deriving lens mtl text
+      transformers
+    ];
+    testHaskellDepends = with haskellPackagesExtended; [
+      base containers hspec hspec-expectations-pretty-diff text
+    ];
+    description = "Generate PureScript data types from Haskell data types";
+    license = stdenv.lib.licenses.bsd3;
+  };
+
+  semigroupsOverride = haskellPackagesExtended.mkDerivation {
+    pname = "semigroups";
+    version = "0.18.1";
+    sha256 = "ae7607fb2b497a53192c378dc84c00b45610fdc5de0ac8c1ac3234ec7acee807";
+    revision = "1";
+    editedCabalFile = "7dd2b3dcc9517705391c1c6a0b51eba1da605b554f9817255c4a1a1df4d4ae3d";
+    libraryHaskellDepends = with haskellPackagesExtended; [ unordered-containers base hashable tagged text ];
+    homepage = "http://github.com/ekmett/semigroups/";
+    description = "Anything that associates";
+    license = stdenv.lib.licenses.bsd3;
+    hydraPlatforms = stdenv.lib.platforms.none;
+   };
+
+  haskellPackagesExtended = pkgs.haskell.packages.lts-6_7.override {
     overrides = self: super: {
-      serokell-core = serokellPackage;
+      serokell-core = serokell-corePackage;
+      rscoin-core = rscoin-corePackage;
       msgpack = msgpackPackage;
       msgpack-rpc = msgpack-rpcPackage;
-      msgpack-aeson = msgpack-aesonPackage;
+      #msgpack-aeson = msgpack-aesonPackage;
       acid-state = acid-statePackage;
+      purescript-bridge = purescript-bridgePackage;
+      time-warp = time-warpPackage;
+      # some package had a problem with semigroups 0.18.2 and therefore we override 0.18.1 to be default
+      semigroups = semigroupsOverride;
     };
   };
 
-  rscoinExtraDeps = with haskellPackagesExtended; [ serokell-core gtk3 
-    aeson pqueue blake2 yaml clock derive extra formatting optparse-generic
-    purescript-bridge servant-server string-conversions temporary turtle wai
-    wai-extra wai-websockets warp websockets configurator 
-    configurator-export ];
-
-  rscoinLibraryHaskellDepends = with haskellPackagesExtended; [
-    acid-state aeson base base64-bytestring binary bytestring cereal
-    conduit-extra containers cryptohash data-default directory ed25519
-    either exceptions file-embed filepath hashable hslogger lens
-    monad-control monad-loops MonadRandom msgpack msgpack-aeson
-    msgpack-rpc mtl QuickCheck random safe safecopy
-      stm text text-format time time-units transformers
-    transformers-base tuple unordered-containers vector
-  ] ++ rscoinExtraDeps;
-  rscoinExecutableHaskellDepends = with haskellPackagesExtended; [
-    acid-state aeson base base64-bytestring binary bytestring cereal
-    conduit-extra containers cryptohash data-default directory ed25519
-    exceptions filepath hashable hslogger hspec lens monad-control
-    monad-loops MonadRandom msgpack msgpack-aeson msgpack-rpc mtl
-    optparse-applicative QuickCheck random safe safecopy
-      stm text text-format time time-units transformers
-    transformers-base tuple unordered-containers vector
-  ] ++ rscoinExtraDeps;
-  rscoinTestHaskellDepends = with haskellPackagesExtended; [
-    acid-state async base bytestring containers data-default exceptions
-    conduit-extra hspec lens MonadRandom msgpack msgpack-rpc mtl QuickCheck random
-    safe safecopy stm text time-units transformers tuple vector
-  ] ++ rscoinExtraDeps;
-  rscoinLibraryPkgconfigDepends =
-    [ haskellPackagesExtended.aeson zlib git openssh stack nodejs ] ++
-    [ pkgconfig cairo haskellPackagesExtended.conduit-extra ] ++
-    [ haskellPackagesExtended.serokell-core
-      haskellPackagesExtended.purescript ];
+  RSlibraryHaskellDepends = with haskellPackagesExtended; [
+    acid-state aeson ansi-terminal base base64-bytestring binary blake2
+    bytestring cereal conduit-extra configurator containers
+    data-default directory ed25519 either exceptions extra file-embed
+    filepath formatting hashable hslogger lens lifted-base
+    monad-control monad-loops MonadRandom msgpack msgpack-rpc mtl
+    optional-args pqueue QuickCheck random rscoin-core safe safecopy
+    serokell-core servant-server stm template-haskell text text-format
+    time time-units time-warp transformers transformers-base tuple
+    turtle unordered-containers vector wai wai-extra wai-websockets
+    warp websockets yaml
+  ];
+  RSexecutableHaskellDepends = with haskellPackagesExtended; [
+    acid-state aeson base base64-bytestring binary bytestring clock
+    containers exceptions extra filepath formatting lens mtl
+    optional-args optparse-applicative optparse-generic
+    purescript-bridge rscoin-core safecopy serokell-core stm
+    string-conversions temporary text text-format time-units time-warp
+    transformers turtle unordered-containers wai wai-extra warp yaml
+  ];
+  RStestHaskellDepends = with haskellPackagesExtended; [
+    acid-state aeson async base binary bytestring containers
+    data-default derive either exceptions extra formatting hashable
+    hspec lens MonadRandom msgpack msgpack-rpc mtl optional-args
+    QuickCheck random rscoin-core safe safecopy serokell-core stm text
+    text-format time-units time-warp transformers unordered-containers
+    vector
+  ];
 }
