@@ -7,8 +7,8 @@ with pkgs; rec {
     version = "0.1.0.0";
     src = pkgs.fetchgit {
       url = "https://github.com/serokell/serokell-core.git";
-      rev = "afc6f36b6e8e2eb85bcb27bb8d856fec7cf927b6";
-      sha256 = "0lpwbqr3dgz6mdxlxsszhn3n5mqyyawjjsykjv56a8nr1hd7nhnr";
+      rev = "9f9715763134e41c9ba92a1359be92f97f93eea8";
+      sha256 = "0cjc61sx78rb901665yxahyyh8gh7zjki1gvz7j4hl32hz8dfqp3";
     };
 
     isLibrary = true;
@@ -28,9 +28,13 @@ with pkgs; rec {
     version = "0.1.0.0";
     src = pkgs.fetchgit {
         url = "https://github.com/input-output-hk/rscoin-core.git";
-        rev = "c4014e9cf2aa27e98a5e6d5659c14385e17b0c18";
-        sha256 = "0m1j72ghzm7ijjb5mwk9zmwpqr4n91xfr6y041q9xiw0k04dk7g1";
+        rev = "5b2a65d58cbd0fe38e8effc3e2b05646c3b2a0ed";
+	sha256 = "00a0sj23gfjfhvkshbin7njsjlq5rd16r3h68pxbh9ms4w90kv1i";
       };
+    isLibrary = true;
+    doCheck = false;
+    doHaddock = false;
+    libraryPkgconfigDepends = with pkgs; [zlib zlib.out];
     libraryHaskellDepends = with haskellPackagesExtended; [
       aeson ansi-terminal base base64-bytestring binary binary-orphans
       blake2 bytestring cereal conduit-extra configurator containers
@@ -38,7 +42,7 @@ with pkgs; rec {
       filepath formatting hashable hslogger lens lifted-base
       monad-control monad-loops MonadRandom msgpack msgpack-rpc mtl
       pqueue QuickCheck quickcheck-instances random safe safecopy
-      scientific serokell-core stm template-haskell text text-format time
+      scientific serokell-core split stm template-haskell text text-format time
       time-units transformers transformers-base tuple
       unordered-containers vector warp websockets yaml
       time-warp
@@ -148,26 +152,29 @@ with pkgs; rec {
     version = "0.1.0.0";
     src = pkgs.fetchgit {
       url = "https://github.com/serokell/time-warp";
-      rev = "0735958621c5a379fd98839564c62e7b60711f88";
-      sha256 = "1qhfnnrpl6wc9m6qdpdjgm03vfkwgc9c1walv9zv87h68v50s665";
+      rev = "557632cdc0e4b90615a7d28359329f05e1919ee5";
+      sha256 = "0hi3xxnxsmpmhvxl8cznp7m3di3n54wwhlqqxxcmc8hhn8354ckf";
     };
     libraryHaskellDepends = with haskellPackagesExtended; [
       ansi-terminal base base64-bytestring binary binary-orphans
       bytestring cereal conduit-extra containers data-default directory
       either exceptions extra file-embed filepath formatting hashable
       hslogger lens lifted-base monad-control monad-loops MonadRandom
-      msgpack msgpack-rpc mtl pqueue QuickCheck quickcheck-instances
+      msgpack msgpack-rpc mtl pkgconfig pqueue QuickCheck quickcheck-instances
       random safe safecopy serokell-core stm template-haskell text
       text-format time time-units transformers transformers-base tuple
-      unordered-containers vector warp websockets yaml
+      unordered-containers vector warp websockets yaml zlib zlib.out
     ];
     testHaskellDepends = with haskellPackagesExtended; [
       aeson async base binary bytestring containers data-default either
       exceptions extra formatting hashable hspec lens MonadRandom msgpack
-      msgpack-rpc mtl QuickCheck random safe safecopy serokell-core stm
+      msgpack-rpc mtl pkgconfig QuickCheck random safe safecopy serokell-core stm
       text text-format time-units transformers unordered-containers
-      vector
+      vector zlib zlib.out 
     ];
+    libraryPkgconfigDepends = with pkgs; [zlib zlib.out];
+    isLibrary = true;
+    doCheck = false;
     homepage = "http://gitlab.serokell.io/serokell-team/time-warp";
     description = "TODO";
     license = stdenv.lib.licenses.gpl3;
