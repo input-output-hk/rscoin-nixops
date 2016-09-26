@@ -20,6 +20,7 @@ let
       notary {
         host        = "${cfg.notary.host}"
         port        = ${toString cfg.notary.port}
+        publicKey   = "${cfg.notary.publicKey}"
       }
     '';
 in
@@ -51,6 +52,7 @@ in
         default = {
           host = "127.0.0.1";
           port = 8123;
+          publicKey = "set this key with nixops magic";
         };
       };
 
@@ -104,11 +106,11 @@ in
         ExecStart = toString [
           "${rscoin}/bin/rscoin-mintette"
           "--config-path ${cfg.configFile}"
+          (if cfg.debug then " --log-severity Debug" else "")
+          "serve"
           "--port ${toString cfg.port}"
           "--sk ${cfg.skPath}"
           "--auto-create-sk"
-          (if cfg.debug then " --log-severity Debug" else "")
-          "serve"
         ];
       };
     };

@@ -147,7 +147,7 @@ with pkgs; rec {
     license = pkgs.stdenv.lib.licenses.publicDomain;
   };
 
-  time-warpPackage = haskellPackagesExtended.mkDerivation {
+ time-warpPackage = haskellPackagesExtended.mkDerivation {
     pname = "time-warp";
     version = "0.1.0.0";
     src = pkgs.fetchgit {

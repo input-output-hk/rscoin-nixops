@@ -16,12 +16,13 @@ let
       bank {
         host       = "${cfg.bankIP}"
         port       = ${toString cfg.bankPort}
-        publicKey  = "${cfg.bankPubKey}"
+        publicKey  = "${cfg.bankPublicKey}"
       }
 
       notary {
-        host = "${cfg.notaryIP}"
-        port = ${toString cfg.notaryPort}
+        host       = "${cfg.notaryIP}"
+        port       = ${toString cfg.notaryPort}
+        publicKey  = "${cfg.notaryPublicKey}"
       }
     '';
 in
@@ -43,7 +44,7 @@ in
         default = 1234;
         description = ''The TCP port where rscoin-explorer will expect a `bank` instance.'';
       };
-      bankPubKey = mkOption {
+      bankPublicKey = mkOption {
         default = ">> you need to set the public key using nix configuration magic <<";
         description = ''The public key of the `bank` rscoin-explorer will use to contact the `bank`.'';
       };      
@@ -56,6 +57,10 @@ in
         default = 1234;
         description = ''The TCP port where rscoin-explorer will expect a `notary` instance.'';
       };
+      notaryPublicKey = mkOption {
+        default = ">> you need to set the public key using nix configuration magic <<";
+        description = ''The public key of the `notary` rscoin-explorer will use to contact the `notary`.'';
+      };      
       webPort = mkOption {
         type = types.int;
         default = 3001;
@@ -143,14 +148,26 @@ in
             access_log ${stateDir}/access.log;
             listen ${toString cfg.port};
             root ${block-explorer-static-files}/share/;
- 
+
             location /index.html { 
+            }
+
+            location ~ \.css {
+              add_header  Content-Type    text/css;
+            }
+
+            location ~ \.svg {
+              add_header  Content-Type    image/svg+xml;
+            }
+
+            location ~ \.png {
+              add_header  Content-Type    image/png;
             }
 
             location / {
               rewrite ^/(address|tx)/.*$ / break;
             } 
- 
+
             location /websocket {
               proxy_pass http://localhost:${toString cfg.webPort}/websocket;
               proxy_http_version 1.1;

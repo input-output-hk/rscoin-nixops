@@ -20,6 +20,7 @@ let
       notary {
         host        = "${cfg.host}"
         port        = ${toString cfg.port}
+        publicKey   = "${cfg.pubKey}"
       }
     ''; 
 in
@@ -41,6 +42,16 @@ in
       host = mkOption {
         type = types.string;
         default = "127.0.0.1";
+      };
+
+      skPath = mkOption {
+        type = types.path;
+        default = builtins.toPath "${stateDir}/.rscoin/notaryKey";
+        description = "the path to notary's secret key";
+      };
+  
+      pubKey = mkOption {
+        type = types.string;
       };
 
       bank = mkOption{
@@ -98,6 +109,8 @@ in
         ExecStart = (toString [
           "${rscoin}/bin/rscoin-notary"
           "--config-path ${cfg.configFile}"
+	  "-k ${cfg.skPath}"
+          "--auto-create-sk"
         ]) + (if cfg.debug then " --log-severity Debug" else "");
       };
     };

@@ -21,6 +21,7 @@ let
       notary {
         host        = "${cfg.notary.host}"
         port        = ${toString cfg.notary.port}
+        publicKey   = "${cfg.notary.publicKey}"
       }
     '';
 in
@@ -53,6 +54,7 @@ in
         default = {
           host = "127.0.0.1";
           port = 8123;
+          publicKey = "You need to set this key using nixops magic";
         };
       };
 
