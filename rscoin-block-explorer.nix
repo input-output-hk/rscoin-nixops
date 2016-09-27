@@ -149,6 +149,8 @@ in
             listen ${toString cfg.port};
             root ${block-explorer-static-files}/share/;
 
+            include ${pkgs.nginx}/conf/mime.types;
+
             location /index.html { 
             }
 

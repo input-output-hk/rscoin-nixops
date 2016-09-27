@@ -12,8 +12,8 @@ let
   explorerRpcPort = 5432;
   explorerWebPort = 8000;
 
-  bankPubKey = "yyMWuLiRPPHtNuoHCxbeqwjbpq5zkEUOQDQFeAd1tks=";
-  notaryPubKey = "AMp4m4AZBPXuhj_52eB-QRyb3xJoUjelAot1wHgIjwk=";
+  bankPubKey = "52iNTcVnex4dy-e1D9HANPbXI3PVb0iZnSQokSsSE3Q=";
+  notaryPubKey = "lytIgX5jV8EJmFmExac1RsRmU3cQeCPGy6JOZ0GjaQ8=";
  
   volhovmKey = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDRMQ16PB/UvIEF+UIHfy66FNaBUWgviE2xuD5qoq/nXURBsHogGzv1ssdj1uaLdh7pZxmo/cRC+Y5f6dallIHHwdiKKOdRq1R/IWToMxnL/TTre+px6rxq21al9r4lvibelIU9vDn0R6OFZo+pRWyXUm33bQ4DVhwWiSls3Hw+9xRq4Pf2aWy//ey5CUTW+QkVdDIOFQG97kHDO3OdoNuaOMdeS+HBgH25bzSlcMw044T/NV9Cyi3y1eEBCoyqA9ba28GIl3vNADBdoQb5YYhBViFLaFsadzgWv5XWTpXV4Kwnq8ekmTcBkDzoTng/QOrDLsFMLo1nEMvhbFZopAfZ volhovm.cs@gmail.com";
   shershKey = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDOgln1GGTaghj8cAyRd9wPJWfwsFBgGY0axzVno7hlwEySDWQCcMtUysQ5N16k3R/Wc234ELPG03yJks1wmV8lncyuGSm3iEPf1zDPE5wvZIGHOZmC6r5iLezYEFqK6itz2I7TbNrNaoabTbIaJD5KZzuclnnM07ZbGTT8a+udidoav0lsJOnfprSG07g7WAjrbNs0Kokt1WIl7Rr0KBYr79Ys8WZlbKKJthsl8nAiE6Gj+6VZjHYf28QkaiNB+9MJHaYYfE3muCw0TXaWbKSHW8Mfmyiz8FiKH4/cYVvhNSd3rTygz3JQoVlRcEQcSuAxIhLeYemOGQO0cUYfTlLF fenx@smachine";
